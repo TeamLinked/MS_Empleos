@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+
+  web:
+    image: teamlinked2019/empleos_be:v2.3
+    #build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    #volumes:
+      #- /code:/var/lib/empleos
+      #- .:/code
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+      - migration
+  
+  migration:
+    image: teamlinked2019/empleos_be:v2.3
+    #build: .
+    #command: bash -c "python manage.py makemigrations empleos && python manage.py migrate"
+    command: python manage.py migrate --noinput
+    #volumes:
+      #- /code:/var/lib/empleos
+      #- .:/code
+    depends_on:
+      - db
+    restart: "no"
+  
+  db:
+    image: postgres
+    ports:
+      - "5433:5432"
