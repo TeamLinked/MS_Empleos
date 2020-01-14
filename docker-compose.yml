@@ -3,14 +3,12 @@ version: '2'
 services:
 
   web:
-    image: teamlinked2019/empleos_be:v2.3
-    #build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    #volumes:
-      #- /code:/var/lib/empleos
-      #- .:/code
+    image: teamlinked2019/empleos:v2.4
+    command: python manage.py runserver 0.0.0.0:8001
+    volumes:
+      - /code:/var/lib/empleos
     ports:
-      - "8001:8000"
+      - "8001:8001"
     depends_on:
       - db
       - migration
@@ -18,13 +16,10 @@ services:
       io.rancher.scheduler.global: 'true'
   
   migration:
-    image: teamlinked2019/empleos_be:v2.3
-    #build: .
-    #command: bash -c "python manage.py makemigrations empleos && python manage.py migrate"
+    image: teamlinked2019/empleos:v2.4
     command: python manage.py migrate --noinput
-    #volumes:
-      #- /code:/var/lib/empleos
-      #- .:/code
+    volumes:
+      - /code:/var/lib/empleos
     depends_on:
       - db
     restart: "no"
